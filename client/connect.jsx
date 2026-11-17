@@ -18,6 +18,8 @@ function detect(text) {
   if (/tiktok\.com/i.test(value)) return { platform: 'TikTok', estimate: '$0.002' }
   if (/instagram\.com/i.test(value)) return { platform: 'Instagram', estimate: '$0.002' }
   if (/(?:^|[/.])(?:x|twitter)\.com/i.test(value)) return { platform: 'X', estimate: '$0.001' }
+  // 视频号：sph 短号、v2_…@finder、单条分享链三种都认
+  if (/weixin\.qq\.com\/sph\/|v2_[0-9a-f]{10,}@finder|\bsph[A-Za-z0-9_-]{4,64}\b/i.test(value)) return { platform: '视频号', estimate: '$0.03' }
   return null
 }
 
@@ -41,7 +43,7 @@ function CopyLine({ value, label }) {
 function SetupGuide({ status, checking, onCheck }) {
   return (
     <div className="md-setup">
-      <p className="md-setup-lead">{t('小红书、抖音、B 站、TikTok、Instagram 和 X 的数据要通过 Monid 读取。它是第三方数据服务，按次收费，一个账号大约几分钱。')}</p>
+      <p className="md-setup-lead">{t('小红书、抖音、B 站、视频号、TikTok、Instagram 和 X 的数据要通过 Monid 读取。它是第三方数据服务，按次收费，一个账号大约几分钱。')}</p>
       <ol>
         <li>
           <strong>{t('把这句话发给 DeepSeek Harness 的新会话')}</strong>
@@ -83,7 +85,7 @@ function AccountForm({ status, onClose }) {
     <form className="md-form" onSubmit={submit}>
       <label className="md-field">
         <span>{t('你的账号主页链接')}</span>
-        <textarea rows={3} required value={text} onChange={e => setText(e.target.value)} placeholder={t('小红书、抖音、B 站、TikTok、Instagram 或 X 的主页链接，App 分享出来的文字也可以')} />
+        <textarea rows={3} required value={text} onChange={e => setText(e.target.value)} placeholder={t('小红书、抖音、B 站、视频号、TikTok、Instagram 或 X 的主页链接；视频号贴 sph 开头的 ID 或单条视频分享链；App 分享的文字也可以')} />
         <small>{t('请只抓自己的账号。会读取最近 20 条公开内容和互动数据，放进内容和复盘，并提炼成你的风格。')}</small>
       </label>
       {saved.length ? (
@@ -92,7 +94,7 @@ function AccountForm({ status, onClose }) {
         </div>
       ) : null}
       <p className="md-setup-foot">
-        {t('链接会发给 Monid 和它的数据服务商。只能读到公开内容，后台才有的数据（如小红书和抖音的播放量）读不到。')}
+        {t('链接会发给 Monid 和它的数据服务商。只能读到公开内容，后台才有的数据（如小红书、抖音和视频号的播放量）读不到。')}
       </p>
       <div className="md-form-foot">
         <span className="md-monid-balance">{status.balance ? t('Monid 余额 ${value}', { value: status.balance.value.toFixed(2) }) : t('Monid 已连接')}</span>
