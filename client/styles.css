@@ -843,3 +843,117 @@ button.md-receipt:hover { transform: translateX(2px); }
 .md-version { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 14px 0 4px; color: var(--ink3); font-size: 12px; line-height: 18px; }
 .md-version a { color: var(--accent, #6b5cff); text-decoration: none; }
 .md-version a:hover { text-decoration: underline; }
+
+/* ─────────────────────────── 内容创作工作台 ─────────────────────────── */
+/* 口播创作五步流程：选题 → 抄开头 → 列观点 → 填内容 → 镜头表现力。       */
+/* 颜色、圆角、阴影全部走 DSH 语义 token，深浅主题由宿主负责。            */
+.md-content-switch .md-seg { flex: none; }
+
+.md-flow-page { padding-top: 78px; }
+.md-flow-pagehead { margin-bottom: 18px; }
+.md-flow-save { flex: none; }
+
+/* 流程名称 / 体裁 / 时长 */
+.md-flow-head { margin-bottom: 18px; animation: md-rise .5s var(--ease) both; }
+.md-flow-title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.md-root .md-flow-title {
+  flex: 1 1 280px; min-width: 0; height: 44px; padding: 0 14px;
+  border-radius: var(--r-md); background: color-mix(in srgb, var(--card) 82%, transparent);
+  box-shadow: inset 0 0 0 .5px var(--line-strong);
+  color: var(--ink); font-size: 20px; font-weight: 400; letter-spacing: -.01em;
+  transition: box-shadow .18s, background .18s;
+}
+.md-root .md-flow-title:focus { outline: none; background: var(--card); box-shadow: inset 0 0 0 1px var(--accent, #6b5cff); }
+.md-flow-title::placeholder { color: var(--ink4); font-weight: 300; }
+.md-flow-duration {
+  height: 36px; padding: 0 10px; border-radius: var(--r-md);
+  background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 .5px var(--line-strong);
+  font-size: 13px; cursor: pointer;
+}
+.md-flow-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; color: var(--ink3); font-size: 12.5px; line-height: 18px; }
+
+/* 五步流水线：一条贯穿的进度线 + 可点的步骤节点 */
+.md-flow-track { position: relative; margin-bottom: 20px; padding: 16px 16px 14px; border-radius: var(--r-xl); background: var(--card); box-shadow: var(--dsw-elevation-soft); animation: md-rise .55s var(--ease) both; }
+.md-flow-progress { position: absolute; left: 46px; right: 46px; top: 40px; height: 2px; background: var(--hover); border-radius: 2px; }
+.md-flow-progress span { display: block; height: 100%; border-radius: 2px; background: var(--accent, #6b5cff); transition: width .5s var(--ease); }
+.md-flow-steps { position: relative; display: flex; justify-content: space-between; gap: 4px; }
+.md-flow-step { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0; background: none; color: var(--ink3); text-align: center; }
+.md-flow-step-dot {
+  position: relative; z-index: 1; display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%; corner-shape: round;
+  background: var(--hover); box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: background .25s var(--ease), color .25s, transform .35s cubic-bezier(.2,1.4,.4,1);
+}
+.md-flow-step:hover .md-flow-step-dot { transform: translateY(-2px); }
+.md-flow-step.is-active .md-flow-step-dot { background: var(--accent, #6b5cff); color: var(--on-primary, #fff); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent, #6b5cff) 18%, transparent); }
+.md-flow-step.is-done:not(.is-active) .md-flow-step-dot { background: color-mix(in srgb, #2fa36c 20%, var(--card)); color: #2fa36c; box-shadow: inset 0 0 0 1px color-mix(in srgb, #2fa36c 40%, transparent); }
+.md-flow-step-label { display: flex; flex-direction: column; gap: 1px; line-height: 1.25; }
+.md-flow-step-label b { font-size: 13px; font-weight: 500; color: var(--ink2); }
+.md-flow-step-label small { font-size: 10.5px; color: var(--ink4); }
+.md-flow-step.is-active .md-flow-step-label b { color: var(--ink); }
+.md-flow-link { align-self: flex-start; margin-top: 20px; width: 0; }
+
+/* 当前步骤工作区 */
+.md-flow-work { animation: md-rise .5s var(--ease) both; }
+.md-flow-workhead { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 18px; }
+.md-flow-workicon { flex: none; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 13px; background: color-mix(in srgb, var(--accent, #6b5cff) 13%, var(--card)); color: var(--accent, #6b5cff); }
+.md-flow-workhead h2 { margin: 1px 0 5px; font-size: 21px; line-height: 28px; font-weight: 400; letter-spacing: -.01em; }
+.md-flow-workhead p { max-width: 900px; margin: 0; color: var(--ink2); font-size: 13.5px; line-height: 21px; }
+.md-flow-columns { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 1080px) { .md-flow-columns { grid-template-columns: 1fr; } }
+
+/* 编辑区 */
+.md-flow-editor { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: var(--r-xl); background: var(--card); box-shadow: var(--dsw-elevation-soft); }
+.md-flow-editor-label { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink); font-weight: 500; }
+.md-flow-editor-label em { font-style: normal; font-weight: 400; color: var(--ink4); font-size: 11.5px; }
+.md-root .md-flow-editor textarea {
+  width: 100%; min-height: 260px; resize: vertical; padding: 14px;
+  border-radius: var(--r-md); background: color-mix(in srgb, var(--bg) 60%, var(--card));
+  box-shadow: inset 0 0 0 .5px var(--line); color: var(--ink);
+  font-size: 15px; line-height: 1.85; font-family: var(--serif, inherit);
+  transition: box-shadow .18s, background .18s;
+}
+.md-root .md-flow-editor textarea:focus { outline: none; background: var(--card); box-shadow: inset 0 0 0 1px var(--accent, #6b5cff); }
+.md-flow-editor textarea::placeholder { color: var(--ink4); line-height: 1.8; }
+.md-flow-editor-foot { display: flex; flex-wrap: wrap; gap: 14px; justify-content: flex-end; color: var(--ink3); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.md-flow-editor-foot .is-ok { color: #2fa36c; }
+.md-flow-meter { height: 3px; margin-top: -4px; border-radius: 3px; background: var(--hover); overflow: hidden; }
+.md-flow-meter span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent, #6b5cff), #2fa36c); transition: width .35s var(--ease); }
+
+/* 侧栏：要点清单 + 工具方法 */
+.md-flow-col-side { display: flex; flex-direction: column; gap: 14px; }
+.md-flow-checks, .md-flow-tools { padding: 14px; border-radius: var(--r-xl); background: var(--card); box-shadow: var(--dsw-elevation-soft); }
+.md-flow-blockhead { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; color: var(--ink2); font-size: 12.5px; font-weight: 500; }
+.md-flow-blockhead small { margin-left: auto; color: var(--ink4); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.md-flow-check { display: flex; align-items: flex-start; gap: 9px; padding: 6px 2px; color: var(--ink2); font-size: 12.5px; line-height: 19px; cursor: pointer; transition: color .18s; }
+.md-flow-check input { position: absolute; opacity: 0; width: 0; height: 0; }
+.md-flow-checkbox { flex: none; display: flex; align-items: center; justify-content: center; width: 17px; height: 17px; margin-top: 1px; border-radius: 5px; box-shadow: inset 0 0 0 1px var(--line-strong); color: transparent; transition: background .18s, color .18s, box-shadow .18s; }
+.md-flow-check.is-checked { color: var(--ink3); }
+.md-flow-check.is-checked > span:last-child { text-decoration: line-through; text-decoration-color: var(--ink4); }
+.md-flow-check.is-checked .md-flow-checkbox { background: var(--accent, #6b5cff); color: var(--on-primary, #fff); box-shadow: none; }
+.md-flow-tool { margin: 0 0 9px; padding-left: 10px; border-left: 2px solid color-mix(in srgb, var(--accent, #6b5cff) 40%, transparent); color: var(--ink2); font-size: 12px; line-height: 19px; }
+.md-flow-tool:last-child { margin-bottom: 0; }
+
+/* 流程库下拉（新建 / 切换 / 删除） */
+.md-flow-library { position: relative; flex: none; }
+.md-flow-library-current { display: inline-flex; align-items: center; gap: 6px; max-width: 220px; height: 36px; padding: 0 10px; border-radius: var(--r-md); background: var(--glass); box-shadow: inset 0 0 0 .5px var(--line-strong); color: var(--ink); font-size: 12.5px; }
+.md-flow-library-current > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.md-flow-library-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; width: 300px; max-height: 360px; overflow-y: auto; padding: 6px; border-radius: var(--r-lg); background: var(--card); box-shadow: var(--dsw-elevation-prominent); animation: md-rise .2s var(--ease) both; }
+.md-flow-library-row { display: flex; align-items: stretch; gap: 2px; border-radius: var(--r-md); }
+.md-flow-library-row.is-on { background: var(--hover); }
+.md-flow-library-row > button:first-child { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; text-align: left; }
+.md-flow-library-row b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; font-weight: 500; color: var(--ink); }
+.md-flow-library-row small { color: var(--ink4); font-size: 11px; }
+.md-flow-library-del { flex: none; width: 30px; color: var(--ink3); border-radius: var(--r-sm); }
+.md-flow-library-del:hover { color: #e05a5a; background: color-mix(in srgb, #e05a5a 12%, transparent); }
+.md-flow-library-add { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 34px; margin-top: 4px; border-radius: var(--r-md); background: color-mix(in srgb, var(--accent, #6b5cff) 12%, transparent); color: var(--accent, #6b5cff); font-size: 12.5px; }
+.md-flow-library-add:hover { background: color-mix(in srgb, var(--accent, #6b5cff) 20%, transparent); }
+
+@media (max-width: 780px) {
+  .md-root .md-flow-page { padding-top: 58px; }
+  .md-flow-steps { flex-wrap: wrap; row-gap: 14px; }
+  .md-flow-step { flex: 1 1 28%; }
+  .md-flow-progress { display: none; }
+  .md-flow-step-label small { display: none; }
+  .md-flow-title-row .md-seg { order: 3; }
+}

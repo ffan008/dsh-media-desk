@@ -14,6 +14,9 @@ const MAX_OUTPUT = 64 * 1024 * 1024
 const COVER_MAX_BYTES = 8 * 1024 * 1024
 const COVER_CONCURRENCY = 4
 const SHORT_HOSTS = ['xhslink.com', 'v.douyin.com', 'b23.tv', 'vm.tiktok.com', 'vt.tiktok.com']
+const WECHAT_FINDER = /^v2_[0-9a-fA-F]{10,240}@finder$/
+const WECHAT_SPH = /^sph[A-Za-z0-9_-]{4,64}$/
+const WECHAT_SHARE = /^https?:\/\/weixin\.qq\.com\/sph\/[A-Za-z0-9]+\/?$/i
 
 export const MONID_SKILL_URL = 'https://monid.ai/SKILL.md'
 
@@ -62,6 +65,20 @@ const SOURCES = {
     calls: {
       posts: '/api/v1/twitter/web/fetch_user_post_tweet',
     },
+  },
+  // 视频号要用 TikHub 的 wechat_channels v2 系列，参数走 body（不是 query），
+  // 且先要把 sph 短号 / 分享链接换成 v2_…@finder。
+  视频号: {
+    body: true,
+    resolveFirst: true,
+    // resolve：id 就是用户贴进来的原文，由 resolve() 统一换成 finder username
+    calls: {
+      resolve: '/api/v1/wechat_channels/v2/fetch_channel_id_to_username',
+      detail: '/api/v1/wechat_channels/v2/fetch_video_detail',
+      posts: '/api/v1/wechat_channels/v2/fetch_user_videos',
+      profile: '/api/v1/wechat_channels/v2/fetch_user_profile',
+    },
+    query: (id, kind) => ({ username: id, raw: false }),
   },
 }
 
@@ -119,14 +136,35 @@ export function parseAccountUrl(raw) {
     const id = /^\/(\w{1,15})\/?$/.exec(url.pathname)?.[1]
     return id && !RESERVED.X.has(id.toLowerCase()) ? { platform: 'X', id, url: `https://x.com/${id}` } : null
   }
+  // 视频号分享链是单条视频，不是主页；记下原文，导入时用它反查账号
+  if (hostIs(host, 'weixin.qq.com') && /^\/sph\//i.test(url.pathname)) {
+    const share = url.toString()
+    return WECHAT_SHARE.test(share) ? { platform: '视频号', id: share, url: share } : null
+  }
+  return null
+}
+
+/** 视频号没有网页主页，用户贴的多半是视频号 ID（sph…）或 finder username（v2_…@finder）。App 复制时常带引导文字，所以从整段里剥出标识。 */
+export function parseWechatText(raw) {
+  const value = String(raw ?? '').trim()
+  // 分享链单独先认，避免被下面的 ID 正则截断
+  const share = /https?:\/\/weixin\.qq\.com\/sph\/[A-Za-z0-9]+\/?/i.exec(value)?.[0]
+  if (share && WECHAT_SHARE.test(share)) return { platform: '视频号', id: share, url: share }
+  const finder = /v2_[0-9a-fA-F]{10,240}@finder/.exec(value)?.[0]
+  if (finder) return { platform: '视频号', id: finder, url: `https://weixin.qq.com/sph/${finder}` }
+  const sph = /\bsph[A-Za-z0-9_-]{4,64}\b/.exec(value)?.[0]
+  if (sph && WECHAT_SPH.test(sph)) return { platform: '视频号', id: sph, url: `https://weixin.qq.com/sph/${sph}` }
   return null
 }
 
 /** 粘贴的内容可能是短链，跟着跳转找到主页。只跟这几个平台的短链，每一跳都检查不是内网。 */
 export async function resolveAccount(text, fetchImpl = fetch) {
+  // 视频号先按纯 ID / finder username 认，不要在没链接时就报错
+  const wechat = parseWechatText(text)
+  if (wechat) return wechat
   const first = findUrl(text)
-  if (!first) throw Object.assign(new Error(tr('没找到链接，请贴账号主页的链接')), { status: 400 })
-  const unsupported = () => Object.assign(new Error(tr('认不出这个主页。目前支持小红书、抖音、B 站、TikTok、Instagram 和 X 的账号主页链接，别的平台可以贴内容来提炼风格。')), { status: 400 })
+  if (!first) throw Object.assign(new Error(tr('没找到链接，请贴账号主页的链接，或者视频号的 ID（sph 开头）')), { status: 400 })
+  const unsupported = () => Object.assign(new Error(tr('认不出这个主页。目前支持小红书、抖音、B 站、视频号、TikTok、Instagram 和 X 的账号主页链接，别的平台可以贴内容来提炼风格。')), { status: 400 })
   let current = first
   for (let hop = 0; hop < 4; hop += 1) {
     const account = parseAccountUrl(current)
@@ -166,6 +204,11 @@ function firstLine(value, fallback) {
 }
 
 function assertOk(platform, output) {
+  // 视频号 raw=false 直接返回扁平对象，没有 code 字段，靠 videos 数组判断
+  if (platform === '视频号') {
+    if (!output || typeof output !== 'object') throw new Error(tr('平台没有返回内容'))
+    return
+  }
   const failed = platform === '抖音' || platform === 'TikTok' ? output?.status_code !== 0
     : platform === 'Instagram' ? !Array.isArray(output?.items ?? output?.data?.items)
       : platform === 'X' ? !Array.isArray(output?.timeline)
@@ -232,6 +275,25 @@ export function normalizePosts(platform, output) {
       }
     })
   }
+  if (platform === '视频号') {
+    // raw=false 的每条在 output.videos[]；id / object_nonce_id 是 64 位大整数，只能当字符串
+    return (Array.isArray(output?.videos) ? output.videos : [])
+      .filter(row => /^\d{6,32}$/.test(String(row?.id ?? '')))
+      .map((row) => {
+        const body = text(row.description ?? row.title, 2000)
+        const cover = httpsUrl(row.media?.cover_url ?? row.cover_img_url)
+        return {
+          id: String(row.id), title: text(row.title ?? row.short_title, 80) || firstLine(body, tr('无标题')), body,
+          publishedAt: isoFromSeconds(row.create_time),
+          // 单条作品没有可公开访问的网页地址，留空比编造一个打不开的链接好
+          url: null, cover,
+          // read_count 实测恒为 0：视频号前台不显示播放量，别把它当真实播放数
+          views: 0,
+          likes: count(row.like_count), comments: count(row.comment_count),
+          saves: count(row.fav_count), shares: count(row.forward_count),
+        }
+      })
+  }
   return (output?.data?.list?.vlist ?? []).filter(row => /^BV\w+$/.test(row?.bvid ?? '')).map(row => ({
     id: row.bvid, title: text(row.title, 80) || tr('无标题'), body: text(row.description, 2000), publishedAt: isoFromSeconds(row.created),
     url: `https://www.bilibili.com/video/${row.bvid}`, cover: httpsUrl(row.pic),
@@ -260,6 +322,10 @@ export function normalizeProfile(platform, { profile, relation }) {
   if (platform === 'X') {
     const user = profile ?? {}
     return { nickname: text(user.name, 40), description: text(user.desc, 300), followers: count(user.sub_count ?? user.followers_count) }
+  }
+  if (platform === '视频号') {
+    const user = profile ?? {}
+    return { nickname: text(user.nickname, 40), description: text(user.signature, 300), followers: count(user.fans_count) }
   }
   const data = profile?.data ?? {}
   return { nickname: text(data.name, 40), description: text(data.sign, 300), followers: count(relation?.follower ?? relation?.data?.follower) }
@@ -388,8 +454,10 @@ export async function monidStatus(run) {
   }
 }
 
-async function runEndpoint(run, endpoint, query) {
-  const data = await run(['run', '-p', 'tikhub', '-e', endpoint, '--query', JSON.stringify(query), '-w', String(RUN_WAIT_SECONDS), '-j'], RUN_WAIT_SECONDS + 30)
+async function runEndpoint(run, endpoint, query, useBody = false) {
+  // 大部分平台用 query；视频号的 wechat_channels v2 接口参数在 body 里
+  const inputArgs = useBody ? ['-i', JSON.stringify(query)] : ['--query', JSON.stringify(query)]
+  const data = await run(['run', '-p', 'tikhub', '-e', endpoint, ...inputArgs, '-w', String(RUN_WAIT_SECONDS), '-j'], RUN_WAIT_SECONDS + 30)
   if (data === null) throw Object.assign(new Error(tr('还没装好 Monid')), { status: 400 })
   if (data.error) {
     const authFailed = data.error.code === 'AUTH_FAILED'
@@ -401,6 +469,30 @@ async function runEndpoint(run, endpoint, query) {
 }
 
 /**
+ * 把用户贴进来的视频号标识换成 finder username。
+ * 支持三种：v2_…@finder（直接用）、sph 短号（走 channel_id 接口）、单条分享链（走 detail 接口反查）。
+ */
+async function resolveWechatId(raw, source, run, onCost) {
+  const value = String(raw ?? '').trim()
+  if (WECHAT_FINDER.test(value)) return { id: value }
+  if (WECHAT_SHARE.test(value)) {
+    const detail = await runEndpoint(run, source.calls.detail, { share_url: value, raw: false }, source.body)
+    onCost(detail.cost)
+    const username = text(detail.output?.username, 256)
+    if (!WECHAT_FINDER.test(username)) throw Object.assign(new Error(tr('这条视频分享链没能反查到账号，请改用视频号 ID（sph 开头）')), { status: 404 })
+    return { id: username }
+  }
+  if (WECHAT_SPH.test(value)) {
+    const resolved = await runEndpoint(run, source.calls.resolve, { channel_id: value, raw: false }, source.body)
+    onCost(resolved.cost)
+    const username = text(resolved.output?.username, 256)
+    if (!WECHAT_FINDER.test(username)) throw Object.assign(new Error(tr('没找到这个视频号，请确认 ID 是不是 sph 开头')), { status: 404 })
+    return { id: username, nickname: resolved.output?.nickname, desc: resolved.output?.desc }
+  }
+  throw Object.assign(new Error(tr('认不出这个视频号标识，请贴 sph 开头的视频号 ID 或单条视频分享链')), { status: 400 })
+}
+
+/**
  * 只读一页内容和账号资料，不翻页，花费封顶。
  * @returns {Promise<{posts: object[], profile: object, cost: number}>} 内容、资料和实际花费（美元）。
  */
@@ -408,12 +500,19 @@ export async function fetchAccount(account, run) {
   const source = SOURCES[account.platform]
   const extras = {}
   let cost = 0
+  let id = account.id
+  // 视频号：先把用户贴的 sph 短号 / 分享链换成 finder username，才能拉作品和资料
+  if (source?.resolveFirst) {
+    const resolved = await resolveWechatId(id, source, run, value => { cost += value })
+    id = resolved.id
+    if (resolved.nickname) extras.resolved = { nickname: resolved.nickname, description: resolved.desc }
+  }
   if (source.profileFirst) {
-    const first = await runEndpoint(run, source.calls.profile, source.query(account.id, 'profile'))
+    const first = await runEndpoint(run, source.calls.profile, source.query(id, 'profile', extras.profile), source.body)
     extras.profile = first.output
     cost += first.cost
   }
-  const posts = await runEndpoint(run, source.calls.posts, source.query(account.id, 'posts', extras.profile))
+  const posts = await runEndpoint(run, source.calls.posts, source.query(id, 'posts', extras.profile), source.body)
   cost += posts.cost
   const list = normalizePosts(account.platform, posts.output)
   if (!list.length) throw Object.assign(new Error(tr('没抓到内容，账号可能是私密的或者还没发过内容。')), { status: 404, cost })
@@ -422,10 +521,15 @@ export async function fetchAccount(account, run) {
     if (extras[kind]) continue
     if (!source.calls[kind]) continue
     try {
-      const result = await runEndpoint(run, source.calls[kind], source.query(account.id, kind))
+      const result = await runEndpoint(run, source.calls[kind], source.query(id, kind), source.body)
       extras[kind] = result.output
       cost += result.cost
     } catch { /* 资料读不到也不影响内容 */ }
+  }
+  // 视频号的资料接口偶尔缺字段，用解析阶段拿到的昵称兜底
+  if (account.platform === '视频号' && extras.resolved) {
+    const normalized = normalizeProfile(account.platform, extras)
+    if (!normalized.nickname) extras.profile = { ...(extras.profile ?? {}), nickname: extras.resolved.nickname, signature: extras.resolved.description }
   }
   return { posts: list, profile: normalizeProfile(account.platform, extras), cost }
 }

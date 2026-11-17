@@ -4,6 +4,7 @@ import { dispatchOps, openItem, setDesk, useDesk } from './desk.js'
 import { Empty, Icon, Segmented } from './ui.jsx'
 import { plural, t, useLang } from './i18n.js'
 import { KIND_LABEL, STATUSES, STATUS_LABEL, displayItem, fmtWhen, posterOf, relativeDay } from './util.js'
+import { FlowWorkbench } from './flow.jsx'
 
 function useContentItems() {
   const items = useDesk(s => s.state.items)
@@ -143,11 +144,25 @@ function Table({ items }) {
 
 export function ContentView() {
   useLang()
+  const [tab, setTab] = React.useState('flow')
   const [mode, setMode] = React.useState('board')
   const items = useContentItems()
   const query = useDesk(s => s.query)
   const counts = STATUSES.map(s => items.filter(i => i.status === s && !(i.parentId && s === 'idea')).length)
   const drafts = items.filter(i => i.production?.status === 'done' || i.drafts?.article || i.drafts?.script).length
+
+  const switcher = (
+    <Segmented
+      label={t('工作区')}
+      value={tab}
+      onChange={setTab}
+      options={[{ value: 'flow', label: t('创作流程'), icon: 'bolt' }, { value: 'library', label: t('内容库'), icon: 'wall' }]}
+    />
+  )
+
+  // 「创作流程」是新的内容创作工作台；「内容库」是原来的看板/表格。
+  if (tab === 'flow') return <FlowWorkbench switcher={switcher} />
+
   return (
     <div className="md-page">
       <header className="md-page-head">
@@ -161,6 +176,7 @@ export function ContentView() {
           ].join(' · ')}</p>
         </div>
         <span style={{ flex: 1 }} />
+        {switcher}
         <label className="md-search">
           <Icon name="search" size={15} />
           <input value={query} onChange={e => setDesk({ query: e.target.value })} placeholder={t('搜索标题、标签、平台')} aria-label={t('搜索内容')} />
