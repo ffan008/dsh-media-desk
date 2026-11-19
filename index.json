@@ -59,7 +59,7 @@
           "source": {
             "type": "git",
             "url": "https://github.com/ffan008/dsh-media-desk-studio",
-            "commit": "9a6ee2fc2a26405258bf2f506d281d19754322ef"
+            "commit": "7b960048435846489da5b0dba944349cb1f4e645"
           },
           "engines": {
             "dsh": ">=0.2.1-rc.5 <0.3.0"
