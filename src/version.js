@@ -1,11 +1,10 @@
-// 版本自查：问 npm registry 上最新发布的是哪个版本，和本地 package.json 比一比。
-// registry 慢或挂了就安静地失败，不挡工作台加载。
+// 版本自查：问 GitHub 最新 release 的 tag，和本地 package.json 比一比。
+// GitHub 慢或挂了就安静地失败，不挡工作台加载。
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const VERSION_URLS = [
-  'https://registry.npmjs.org/dsh-media-desk/latest',
-  'https://registry.npmmirror.com/dsh-media-desk/latest',
+  'https://api.github.com/repos/ffan008/dsh-media-desk-studio/releases/latest',
 ]
 const FETCH_TIMEOUT_MS = 8_000
 // 成功的结果放一小时，失败半分钟后可以再问；别让离线时的每次刷新都去撞墙
@@ -58,7 +57,9 @@ async function fetchVersion(url, fetchImpl) {
     const res = await fetchImpl(url, { signal: abort.signal, headers: { accept: 'application/json' } })
     if (!res.ok) return null
     const body = await res.json()
-    return typeof body?.version === 'string' ? body.version : null
+    // GitHub release 的版本在 tag_name；也兼容 registry 风格的 version 字段
+    const candidate = body?.tag_name ?? body?.version
+    return typeof candidate === 'string' ? candidate : null
   } catch {
     return null
   } finally {
@@ -68,7 +69,7 @@ async function fetchVersion(url, fetchImpl) {
 
 /**
  * 版本检查器。read() 给出 { current, latest, updateAvailable, failed, checkedAt, ready }。
- * 两个 registry 依次试，先成功的算数；同一时刻只发一轮请求。
+ * 依次试配置的地址，先成功的算数；同一时刻只发一轮请求。
  */
 export function createVersionCheck({ fetchImpl = fetch, now = Date.now } = {}) {
   const current = currentVersion()

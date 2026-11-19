@@ -89,7 +89,7 @@ test('#4 模型调用带上会话标识，供 opencode-go 这类按会话路由�
   await callModel(ctx, { system: 's', user: 'u' })
   await callModel(ctx, { system: 's', user: 'u' })
   await callModel(ctx, { system: 's', user: 'u', sessionId: 'custom' })
-  assert.match(PLUGIN_SESSION_ID, /^dsh-media-desk-[\da-f-]{36}$/)
+  assert.match(PLUGIN_SESSION_ID, /^dsh-media-desk-studio-[\da-f-]{36}$/)
   assert.deepEqual(requests.map(row => row.sessionId), [PLUGIN_SESSION_ID, PLUGIN_SESSION_ID, 'custom'])
 })
 
@@ -110,7 +110,7 @@ test('PR #5 助手模型自选：指定后优先用，清空后跟随默认；�
     setAssistantModel(null)
   }
 
-  const dir = await mkdtemp(join(tmpdir(), 'media-desk-'))
+  const dir = await mkdtemp(join(tmpdir(), 'media-desk-studio-'))
   try {
     const settings = new Settings(dir)
     assert.deepEqual((await settings.read()).assistant, { provider: '', model: '' })
@@ -129,7 +129,7 @@ test('#16 再次保存不冲掉文件夹里手改的稿子，标题相同的两�
   const { mkdtemp, readdir, readFile, rm, writeFile } = await import('node:fs/promises')
   const { tmpdir } = await import('node:os')
   const { join } = await import('node:path')
-  const dir = await mkdtemp(join(tmpdir(), 'media-desk-issue16-'))
+  const dir = await mkdtemp(join(tmpdir(), 'media-desk-studio-issue16-'))
   try {
     const options = { filesDir: join(dir, 'files'), exportDir: join(dir, 'out') }
     const first = { title: '同一个标题', article: '## 开头\n\n第一版。' }

@@ -20,7 +20,7 @@
   },
   "plugins": [
     {
-      "name": "dsh-media-desk",
+      "name": "dsh-media-desk-studio",
       "title": {
         "en": "Media Desk",
         "zh": "自媒体工作台"
@@ -30,9 +30,9 @@
         "zh": "一句话记灵感，一键做出脚本、封面、配图和黑白线稿分镜。DeepSeek Harness 上的自媒体创作工作台：灵感墙、成稿、排期、复盘和专属风格卡。"
       },
       "author": "蜗牛的科技笔记",
-      "homepage": "https://github.com/woniuniuniu/dsh-media-desk#readme",
+      "homepage": "https://github.com/ffan008/dsh-media-desk-studio#readme",
       "repository": {
-        "url": "https://github.com/woniuniuniu/dsh-media-desk"
+        "url": "https://github.com/ffan008/dsh-media-desk-studio"
       },
       "metadata": {
         "category": "content-creation",

@@ -1,4 +1,4 @@
-// dsh-media-desk host 半片：/media-desk/* 接口、文件服务和模型调用。
+// dsh-media-desk-studio host 半片：/media-desk-studio/* 接口、文件服务和模型调用。
 import { createReadStream } from 'node:fs'
 import { execFile } from 'node:child_process'
 import { stat, writeFile } from 'node:fs/promises'
@@ -277,12 +277,12 @@ async function handleUpload(req, store, res) {
   await store.read()
   const name = `${newId('f')}${ext}`
   await writeFile(join(store.filesDir, name), buffer)
-  return json(res, 200, { src: `media-desk/files/${name}`, kind: type.startsWith('video/') ? 'video' : 'image' })
+  return json(res, 200, { src: `media-desk-studio/files/${name}`, kind: type.startsWith('video/') ? 'video' : 'image' })
 }
 
 async function route(ctx, store, desk, req, res) {
   const url = new URL(req.url || '/', 'http://local')
-  const path = url.pathname.replace(/^\/media-desk\/?/, '')
+  const path = url.pathname.replace(/^\/media-desk-studio\/?/, '')
   const method = req.method || 'GET'
 
   if ((method === 'GET' || method === 'HEAD') && path.startsWith('assets/')) {
@@ -416,7 +416,7 @@ async function route(ctx, store, desk, req, res) {
       const { buffer, ext } = await desk.producer.generate(settings.image, 'A single paper boat on calm water, black and white pencil line art sketch, plain white paper background, no text.')
       const name = `${newId('t')}${ext}`
       await writeFile(join(store.filesDir, name), buffer)
-      return json(res, 200, { src: `media-desk/files/${name}` })
+      return json(res, 200, { src: `media-desk-studio/files/${name}` })
     }
     case 'capture-url': return json(res, 200, await addFromUrl(ctx, store, body))
     case 'account/refresh': return json(res, 200, await refreshAccount(store, body))
@@ -458,7 +458,7 @@ export function requestRejection(ctx, req) {
   return connection.requestRejection({ headers: req.headers })
 }
 
-export const name = 'dsh-media-desk'
+export const name = 'dsh-media-desk-studio'
 
 export default {
   inject: ['webServer', 'connection'],
@@ -476,7 +476,7 @@ export default {
     settings.read().then(saved => setAssistantModel(saved.assistant)).catch(() => {})
     ctx.effect(() => ctx.webServer.register({
       kind: 'prefix',
-      path: '/media-desk',
+      path: '/media-desk-studio',
       handler: async (req, res) => {
         try {
           const rejection = requestRejection(ctx, req)
@@ -484,7 +484,7 @@ export default {
             json(res, rejection, { error: tr('未授权') })
             return
           }
-          await withLang(req.headers['x-media-desk-lang'], () => route(ctx, store, desk, req, res))
+          await withLang(req.headers['x-media-desk-studio-lang'], () => route(ctx, store, desk, req, res))
         } catch (err) {
           if (res.headersSent) {
             res.end()
@@ -493,6 +493,6 @@ export default {
           json(res, err.status || 500, { error: err.message })
         }
       },
-    }), 'dsh-media-desk: /media-desk routes')
+    }), 'dsh-media-desk-studio: /media-desk-studio routes')
   },
 }

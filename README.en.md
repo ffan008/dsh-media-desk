@@ -22,7 +22,7 @@
   <img alt="DeepSeek Harness 0.2.x" src="https://img.shields.io/badge/DeepSeek%20Harness-0.2.x-111?style=flat-square">
   <img alt="Mac desktop and web" src="https://img.shields.io/badge/Mac%20desktop-web-111?style=flat-square">
   <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/MIT-open%20source-111?style=flat-square"></a>
-  <a href="https://github.com/woniuniuniu/dsh-media-desk/stargazers"><img alt="Star" src="https://img.shields.io/github/stars/woniuniuniu/dsh-media-desk?style=flat-square&color=111&label=Star"></a>
+  <a href="https://github.com/ffan008/dsh-media-desk-studio/stargazers"><img alt="Star" src="https://img.shields.io/github/stars/ffan008/dsh-media-desk-studio?style=flat-square&color=111&label=Star"></a>
 </p>
 
 <br>
@@ -157,32 +157,32 @@ Requires DeepSeek Harness `0.2.1-rc.5` or later in the `0.2.x` line. Tested on `
 Switch to **Discover** and add this index URL — once is enough:
 
 ```
-https://raw.githubusercontent.com/woniuniuniu/dsh-media-desk/main/index.json
+https://raw.githubusercontent.com/ffan008/dsh-media-desk-studio/main/index.json
 ```
 
 If github.com is hard to reach from your network, use this CDN mirror instead — it can lag up to 12 hours behind the latest release:
 
 ```
-https://cdn.jsdelivr.net/gh/woniuniuniu/dsh-media-desk@main/index.json
+https://cdn.jsdelivr.net/gh/ffan008/dsh-media-desk-studio@main/index.json
 ```
 
-**Media Desk** shows up in the list; install it from there. It installs the same `dsh-media-desk` npm package, the index just saves typing the package name.
+**Media Desk** shows up in the list; install it from there. It installs the same `dsh-media-desk-studio` npm package, the index just saves typing the package name.
 
-Without the index, go to Plugins → Add plugin, enter `dsh-media-desk`, and install. You can also install from the command line. Quit the desktop app completely (⌘Q) first and reopen it afterwards. For the web version, restart `dsh web`. If the `dsh` command isn't available in your terminal, choose "Manage dsh command" from the desktop app's menu.
+Without the index, go to Plugins → Add plugin, enter `dsh-media-desk-studio`, and install. You can also install from the command line. Quit the desktop app completely (⌘Q) first and reopen it afterwards. For the web version, restart `dsh web`. If the `dsh` command isn't available in your terminal, choose "Manage dsh command" from the desktop app's menu.
 
 ```bash
-dsh plugin --profile desktop add dsh-media-desk
+dsh plugin --profile desktop add dsh-media-desk-studio
 ```
 
 ```bash
-dsh plugin --profile web add dsh-media-desk
+dsh plugin --profile web add dsh-media-desk-studio
 ```
 
-**2. Update.** When a new version comes out, the Plugins page shows an update — click it; a command-line install runs the same command again. Media Desk also checks npm itself (at most once an hour, reading only the version number): when a newer version exists the top bar shows `↑ vX.Y.Z`, Settings shows the version you are on, and the badge opens the npm page with the upgrade command. To install offline, download `dsh-media-desk-*.tgz` from [Releases](https://github.com/woniuniuniu/dsh-media-desk/releases/latest) and use `"file:$PWD/dsh-media-desk-VERSION.tgz"` in place of the package name.
+**2. Update.** When a new version comes out, the Plugins page shows an update — click it; a command-line install runs the same command again. Media Desk also checks npm itself (at most once an hour, reading only the version number): when a newer version exists the top bar shows `↑ vX.Y.Z`, Settings shows the version you are on, and the badge opens the npm page with the upgrade command. To install offline, download `dsh-media-desk-studio-*.tgz` from [Releases](https://github.com/ffan008/dsh-media-desk-studio/releases/latest) and use `"file:$PWD/dsh-media-desk-studio-VERSION.tgz"` in place of the package name.
 
 **3. Open.** **Media Desk** appears in the sidebar. On first launch it's filled with sample data so you can explore every page. Click **Clear sample data** in the top right when you're ready to start with your own.
 
-To uninstall, replace `add` with `remove`. Your content stays in `~/.dsh/media-desk/`.
+To uninstall, replace `add` with `remove`. Your content stays in `~/.dsh/media-desk-studio/`.
 
 <br>
 
@@ -250,7 +250,7 @@ No. Platforms don't offer a common publishing API, so copy the script or save th
 <summary><b>Where is my data?</b></summary>
 <br>
 
-Everything stays on your computer in `~/.dsh/media-desk/`, shared by the desktop and web versions. No cloud and no sign-up.
+Everything stays on your computer in `~/.dsh/media-desk-studio/`, shared by the desktop and web versions. No cloud and no sign-up.
 
 </details>
 
@@ -282,7 +282,7 @@ No. It's a community plugin. Scripts are written by the model you've set up in D
 
 ## About the author
 
-I'm [蜗牛的科技笔记](https://www.xiaohongshu.com/user/profile/5faedce8000000000101c8a3) (Snail's Tech Notes), a tech creator on RedNote (ID `1097519508`). I use this desk every day. It's built around three problems I kept running into: losing ideas, drafts that took too long, and never checking how posts did. Issues and ideas are welcome on [GitHub](https://github.com/woniuniuniu/dsh-media-desk/issues).
+I'm [蜗牛的科技笔记](https://www.xiaohongshu.com/user/profile/5faedce8000000000101c8a3) (Snail's Tech Notes), a tech creator on RedNote (ID `1097519508`). I use this desk every day. It's built around three problems I kept running into: losing ideas, drafts that took too long, and never checking how posts did. Issues and ideas are welcome on [GitHub](https://github.com/ffan008/dsh-media-desk-studio/issues).
 
 ## Thanks
 
@@ -293,27 +293,27 @@ I'm [蜗牛的科技笔记](https://www.xiaohongshu.com/user/profile/5faedce8000
 
 To the people who tried it carefully, tracked problems down and sent fixes:
 
-- [secountAiAccount](https://github.com/secountAiAccount), for spotting the unreadable style dropdown in dark mode ([#1](https://github.com/woniuniuniu/dsh-media-desk/issues/1)) and the settings icon that looked like a theme toggle ([#2](https://github.com/woniuniuniu/dsh-media-desk/issues/2))
-- [isxiaokunos](https://github.com/isxiaokunos), for pinning down why image gateways that return relative URLs always failed, were misreported and needlessly retried, with a patch and real measurements ([#3](https://github.com/woniuniuniu/dsh-media-desk/issues/3))
-- [townmi (Harry Tang)](https://github.com/townmi), for finding that opencode-go needs a session header and that the panel misreported the failure as "offline" ([#4](https://github.com/woniuniuniu/dsh-media-desk/issues/4))
-- [zach22-1999](https://github.com/zach22-1999), for fixing the crash when importing X posts whose media field isn't a list ([#6](https://github.com/woniuniuniu/dsh-media-desk/pull/6))
-- [chenxupeng1990-eng](https://github.com/chenxupeng1990-eng), for letting the assistant use any connected model instead of only the DSH default ([#5](https://github.com/woniuniuniu/dsh-media-desk/pull/5))
-- [dsh-agent-sixtyseven](https://github.com/dsh-agent-sixtyseven), for tracking down why account import on Windows kept saying "Monid isn’t installed yet" and fixing both how the command is found and how it's run ([#7](https://github.com/woniuniuniu/dsh-media-desk/issues/7), [#8](https://github.com/woniuniuniu/dsh-media-desk/pull/8))
-- [smallflycar](https://github.com/smallflycar), for letting the desk draw images with a GPT subscription, no separate image API needed ([#9](https://github.com/woniuniuniu/dsh-media-desk/pull/9))
-- [cofftea114](https://github.com/cofftea114), for pointing out that the desk has no entry once another plugin takes over the left sidebar, and for showing how to mount it as a dsh-better-sidebar tab ([#10](https://github.com/woniuniuniu/dsh-media-desk/issues/10))
-- [Feahter](https://github.com/Feahter), for the plugin market index that makes the desk a one-click install from Discover, validation and tests included ([#11](https://github.com/woniuniuniu/dsh-media-desk/pull/11)), and for the built-in version check that flags new releases in the top bar and shows the current version in Settings ([#19](https://github.com/woniuniuniu/dsh-media-desk/pull/19))
-- [TerryWang9112 (Terry)](https://github.com/TerryWang9112), for adding Alibaba Cloud Bailian and Wan image generation, and for letting each draft skip images ([#12](https://github.com/woniuniuniu/dsh-media-desk/pull/12))
-- [ytzhangFTD](https://github.com/ytzhangFTD), for noticing that an idea's notes disappear inside the studio and pinpointing the missing render path ([#13](https://github.com/woniuniuniu/dsh-media-desk/issues/13))
-- [giuliano1101](https://github.com/giuliano1101), for finding that stats for the same post could be counted twice ([#15](https://github.com/woniuniuniu/dsh-media-desk/issues/15)) and that saving again overwrote hand edits in the export folder ([#16](https://github.com/woniuniuniu/dsh-media-desk/issues/16)), and for building a full take on multiple accounts, a CLI and MCP server, and version history that we're learning from ([#14](https://github.com/woniuniuniu/dsh-media-desk/pull/14))
-- [wmaly13](https://github.com/wmaly13), for spotting the off-centre Script / Article labels in the format switch and suggesting sub-ideas under an idea ([#18](https://github.com/woniuniuniu/dsh-media-desk/issues/18))
+- [secountAiAccount](https://github.com/secountAiAccount), for spotting the unreadable style dropdown in dark mode ([#1](https://github.com/ffan008/dsh-media-desk-studio/issues/1)) and the settings icon that looked like a theme toggle ([#2](https://github.com/ffan008/dsh-media-desk-studio/issues/2))
+- [isxiaokunos](https://github.com/isxiaokunos), for pinning down why image gateways that return relative URLs always failed, were misreported and needlessly retried, with a patch and real measurements ([#3](https://github.com/ffan008/dsh-media-desk-studio/issues/3))
+- [townmi (Harry Tang)](https://github.com/townmi), for finding that opencode-go needs a session header and that the panel misreported the failure as "offline" ([#4](https://github.com/ffan008/dsh-media-desk-studio/issues/4))
+- [zach22-1999](https://github.com/zach22-1999), for fixing the crash when importing X posts whose media field isn't a list ([#6](https://github.com/ffan008/dsh-media-desk-studio/pull/6))
+- [chenxupeng1990-eng](https://github.com/chenxupeng1990-eng), for letting the assistant use any connected model instead of only the DSH default ([#5](https://github.com/ffan008/dsh-media-desk-studio/pull/5))
+- [dsh-agent-sixtyseven](https://github.com/dsh-agent-sixtyseven), for tracking down why account import on Windows kept saying "Monid isn’t installed yet" and fixing both how the command is found and how it's run ([#7](https://github.com/ffan008/dsh-media-desk-studio/issues/7), [#8](https://github.com/ffan008/dsh-media-desk-studio/pull/8))
+- [smallflycar](https://github.com/smallflycar), for letting the desk draw images with a GPT subscription, no separate image API needed ([#9](https://github.com/ffan008/dsh-media-desk-studio/pull/9))
+- [cofftea114](https://github.com/cofftea114), for pointing out that the desk has no entry once another plugin takes over the left sidebar, and for showing how to mount it as a dsh-better-sidebar tab ([#10](https://github.com/ffan008/dsh-media-desk-studio/issues/10))
+- [Feahter](https://github.com/Feahter), for the plugin market index that makes the desk a one-click install from Discover, validation and tests included ([#11](https://github.com/ffan008/dsh-media-desk-studio/pull/11)), and for the built-in version check that flags new releases in the top bar and shows the current version in Settings ([#19](https://github.com/ffan008/dsh-media-desk-studio/pull/19))
+- [TerryWang9112 (Terry)](https://github.com/TerryWang9112), for adding Alibaba Cloud Bailian and Wan image generation, and for letting each draft skip images ([#12](https://github.com/ffan008/dsh-media-desk-studio/pull/12))
+- [ytzhangFTD](https://github.com/ytzhangFTD), for noticing that an idea's notes disappear inside the studio and pinpointing the missing render path ([#13](https://github.com/ffan008/dsh-media-desk-studio/issues/13))
+- [giuliano1101](https://github.com/giuliano1101), for finding that stats for the same post could be counted twice ([#15](https://github.com/ffan008/dsh-media-desk-studio/issues/15)) and that saving again overwrote hand edits in the export folder ([#16](https://github.com/ffan008/dsh-media-desk-studio/issues/16)), and for building a full take on multiple accounts, a CLI and MCP server, and version history that we're learning from ([#14](https://github.com/ffan008/dsh-media-desk-studio/pull/14))
+- [wmaly13](https://github.com/wmaly13), for spotting the off-centre Script / Article labels in the format switch and suggesting sub-ideas under an idea ([#18](https://github.com/ffan008/dsh-media-desk-studio/issues/18))
 
-[Issues](https://github.com/woniuniuniu/dsh-media-desk/issues) are always welcome. Every one gets read.
+[Issues](https://github.com/ffan008/dsh-media-desk-studio/issues) are always welcome. Every one gets read.
 
 ### Contributors
 
 Thanks to everyone who has contributed code:
 
-[![Contributors](https://contrib.rocks/image?repo=woniuniuniu/dsh-media-desk)](https://github.com/woniuniuniu/dsh-media-desk/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=ffan008/dsh-media-desk-studio)](https://github.com/ffan008/dsh-media-desk-studio/graphs/contributors)
 
 ## Development
 
@@ -340,7 +340,7 @@ npm pack                       # build the installable tgz
 
 Restart DeepSeek Harness after changing `src/`.
 
-**Security:** Every route is authenticated by the host. Model output and fetched content are reduced to known fields with length limits, and only allow-listed operations run. Pasted links can't reach localhost or private networks. `monid` runs without a shell, and account IDs must match fixed formats. Please report vulnerabilities privately through [Security Advisories](https://github.com/woniuniuniu/dsh-media-desk/security/advisories/new).
+**Security:** Every route is authenticated by the host. Model output and fetched content are reduced to known fields with length limits, and only allow-listed operations run. Pasted links can't reach localhost or private networks. `monid` runs without a shell, and account IDs must match fixed formats. Please report vulnerabilities privately through [Security Advisories](https://github.com/ffan008/dsh-media-desk-studio/security/advisories/new).
 
 <br>
 

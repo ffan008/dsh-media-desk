@@ -1,10 +1,10 @@
-// 版本检查：比版本号、registry 挂了换镜像、结果按 TTL 缓存。
+// 版本检查：比版本号、GitHub 挂了安静失败、结果按 TTL 缓存。
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createVersionCheck, currentVersion, isNewerRelease, parseVersion } from '../src/version.js'
 
-const NPM = 'https://registry.npmjs.org/dsh-media-desk/latest'
-const MIRROR = 'https://registry.npmmirror.com/dsh-media-desk/latest'
+// 版本自查现在只问 GitHub releases/latest，返回体里版本在 tag_name。
+const RELEASE = 'https://api.github.com/repos/ffan008/dsh-media-desk-studio/releases/latest'
 
 function fakeFetch(answers) {
   const calls = []
@@ -12,7 +12,8 @@ function fakeFetch(answers) {
     calls.push(url)
     const answer = answers[url]
     if (answer === undefined) return { ok: false, json: async () => ({}) }
-    return { ok: true, json: async () => ({ version: answer }) }
+    // 同时兼容 tag_name（GitHub）和 version（registry），两种形状都能解析
+    return { ok: true, json: async () => ({ tag_name: answer, version: answer }) }
   }
   impl.calls = calls
   return impl
@@ -45,7 +46,7 @@ test('同一 x.y.z 时正式版比 rc 新（不许把 rc 当最新）', () => {
 test('查挂了不抹掉上次查到的新版本', async () => {
   let now = 0
   let down = false
-  const impl = async () => (down ? { ok: false } : { ok: true, json: async () => ({ version: '9.9.9' }) })
+  const impl = async () => (down ? { ok: false } : { ok: true, json: async () => ({ tag_name: '9.9.9' }) })
   const check = createVersionCheck({ fetchImpl: impl, now: () => now })
   assert.equal((await check.read()).updateAvailable, true)
   down = true
@@ -56,14 +57,14 @@ test('查挂了不抹掉上次查到的新版本', async () => {
   assert.equal(after.updateAvailable, true)
 })
 
-test('同一时刻只问一轮 registry', async () => {
+test('同一时刻只问一轮', async () => {
   const calls = []
   let release
   const gate = new Promise(done => { release = done })
   const impl = async (url) => {
     calls.push(url)
     await gate
-    return { ok: true, json: async () => ({ version: '9.9.9' }) }
+    return { ok: true, json: async () => ({ tag_name: '9.9.9' }) }
   }
   const check = createVersionCheck({ fetchImpl: impl, now: () => 1 })
   const pending = Promise.all([check.read(), check.read(), check.read()])
@@ -78,9 +79,9 @@ test('currentVersion 读得到自己的 package.json', () => {
   assert.match(currentVersion() ?? '', /^\d+\.\d+\.\d+/)
 })
 
-test('第一个 registry 就成了就用它，一小时内的第二次读走缓存', async () => {
+test('问 GitHub 拿到版本，一小时内的第二次读走缓存', async () => {
   let now = 1_000
-  const fetchImpl = fakeFetch({ [NPM]: '9.9.9' })
+  const fetchImpl = fakeFetch({ [RELEASE]: '9.9.9' })
   const check = createVersionCheck({ fetchImpl, now: () => now })
 
   const info = await check.read()
@@ -90,23 +91,20 @@ test('第一个 registry 就成了就用它，一小时内的第二次读走缓�
   assert.equal(info.failed, false)
   assert.equal(info.ready, true)
   assert.equal(typeof info.checkedAt, 'string')
+  assert.deepEqual(fetchImpl.calls, [RELEASE])
 
   now += 30 * 60 * 1000
   await check.read()
   assert.equal(fetchImpl.calls.length, 1)
 })
 
-test('registry 挂了换镜像；全挂时标记失败，不冒充有新版本', async () => {
-  const fallback = fakeFetch({ [MIRROR]: '9.9.9' })
-  const info = await createVersionCheck({ fetchImpl: fallback, now: () => 1_000 }).read()
-  assert.equal(info.latest, '9.9.9')
-  assert.deepEqual(fallback.calls, [NPM, MIRROR])
-
+test('GitHub 挂了标记失败，不冒充有新版本', async () => {
   const down = fakeFetch({})
   const failed = await createVersionCheck({ fetchImpl: down, now: () => 1_000 }).read()
   assert.equal(failed.failed, true)
   assert.equal(failed.latest, null)
   assert.equal(failed.updateAvailable, null)
+  assert.deepEqual(down.calls, [RELEASE])
 })
 
 test('失败半分钟后才重试，成功一小时内不再问', async () => {
@@ -114,20 +112,20 @@ test('失败半分钟后才重试，成功一小时内不再问', async () => {
   const down = fakeFetch({})
   const failing = createVersionCheck({ fetchImpl: down, now: () => now })
   await failing.read()
-  assert.equal(down.calls.length, 2)
+  assert.equal(down.calls.length, 1)
   now = 10_000
   await failing.read()
-  assert.equal(down.calls.length, 2)
+  assert.equal(down.calls.length, 1)
   now = 40_000
   await failing.read()
-  assert.equal(down.calls.length, 4)
+  assert.equal(down.calls.length, 2)
 
   now = 0
   let answer = '9.9.9'
   const calls = []
   const up = async (url) => {
     calls.push(url)
-    return { ok: true, json: async () => ({ version: answer }) }
+    return { ok: true, json: async () => ({ tag_name: answer }) }
   }
   const ok = createVersionCheck({ fetchImpl: up, now: () => now })
   await ok.read()

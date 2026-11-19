@@ -560,7 +560,7 @@ async function saveCover(raw, filesDir, fetchImpl) {
       if (!ext) return null
       const name = `${newId('c')}${ext}`
       await writeFile(join(filesDir, name), buffer)
-      return `media-desk/files/${name}`
+      return `media-desk-studio/files/${name}`
     }
   } catch { /* 封面不是必需的 */ }
   return null

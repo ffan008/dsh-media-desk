@@ -2,7 +2,7 @@
 // 流程稿存在浏览器 localStorage，刷新不丢；不占用工作台的内容数据，也不上传。
 import { lang } from './i18n.js'
 
-const KEY = 'dsh-media-desk/flow-v1'
+const KEY = 'dsh-media-desk-studio/flow-v1'
 
 /** 五步流程的静态知识：要点、工具、公式都来自「新手做口播短视频全流程拆解」。 */
 export const STEPS = [

@@ -22,7 +22,7 @@
   <img alt="DeepSeek Harness 0.2.x" src="https://img.shields.io/badge/DeepSeek%20Harness-0.2.x-111?style=flat-square">
   <img alt="Mac 桌面版与网页版" src="https://img.shields.io/badge/Mac%20%E6%A1%8C%E9%9D%A2%E7%89%88-%E7%BD%91%E9%A1%B5%E7%89%88-111?style=flat-square">
   <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/MIT-%E5%BC%80%E6%BA%90-111?style=flat-square"></a>
-  <a href="https://github.com/woniuniuniu/dsh-media-desk/stargazers"><img alt="Star" src="https://img.shields.io/github/stars/woniuniuniu/dsh-media-desk?style=flat-square&color=111&label=Star"></a>
+  <a href="https://github.com/ffan008/dsh-media-desk-studio/stargazers"><img alt="Star" src="https://img.shields.io/github/stars/ffan008/dsh-media-desk-studio?style=flat-square&color=111&label=Star"></a>
 </p>
 
 <br>
@@ -172,32 +172,32 @@
 切到「发现」，添加这条索引地址（加一次就够）：
 
 ```
-https://raw.githubusercontent.com/woniuniuniu/dsh-media-desk/main/index.json
+https://raw.githubusercontent.com/ffan008/dsh-media-desk-studio/main/index.json
 ```
 
 GitHub 直连不通时，换成这个 CDN 镜像，代价是它最多可能比最新发布晚 12 小时：
 
 ```
-https://cdn.jsdelivr.net/gh/woniuniuniu/dsh-media-desk@main/index.json
+https://cdn.jsdelivr.net/gh/ffan008/dsh-media-desk-studio@main/index.json
 ```
 
-列表里会出现「自媒体工作台」，点安装即可。它装的就是同一个 npm 包 `dsh-media-desk`，索引只是省掉手输包名这一步。
+列表里会出现「自媒体工作台」，点安装即可。它装的就是同一个 npm 包 `dsh-media-desk-studio`，索引只是省掉手输包名这一步。
 
-不想加索引，也可以在「插件」→「添加插件」里输入包名 `dsh-media-desk` 点安装，或者用命令行。桌面版要先完全退出（⌘Q）再装，装好重新打开；网页版装好后重启 `dsh web`。终端里没有 `dsh` 的话，先在桌面版菜单里选「管理 dsh 命令」。
+不想加索引，也可以在「插件」→「添加插件」里输入包名 `dsh-media-desk-studio` 点安装，或者用命令行。桌面版要先完全退出（⌘Q）再装，装好重新打开；网页版装好后重启 `dsh web`。终端里没有 `dsh` 的话，先在桌面版菜单里选「管理 dsh 命令」。
 
 ```bash
-dsh plugin --profile desktop add dsh-media-desk
+dsh plugin --profile desktop add dsh-media-desk-studio
 ```
 
 ```bash
-dsh plugin --profile web add dsh-media-desk
+dsh plugin --profile web add dsh-media-desk-studio
 ```
 
-**2. 更新。** 有新版本时，插件页会显示可更新，点一下就行；用命令行装的重跑一次上面的命令。工作台自己也会查 npm 上的最新版本（每小时最多一次，只读版本号）：有新版本时顶栏出现 `↑ v新版本号` 的小提示，设置底部能看到当前版本，点提示去 npm 页面看升级命令。想离线安装的话，也可以到 [Releases](https://github.com/woniuniuniu/dsh-media-desk/releases/latest) 下载 `dsh-media-desk-*.tgz`，把包名换成 `"file:$PWD/dsh-media-desk-版本号.tgz"`。
+**2. 更新。** 有新版本时，插件页会显示可更新，点一下就行；用命令行装的重跑一次上面的命令。工作台自己也会查 npm 上的最新版本（每小时最多一次，只读版本号）：有新版本时顶栏出现 `↑ v新版本号` 的小提示，设置底部能看到当前版本，点提示去 npm 页面看升级命令。想离线安装的话，也可以到 [Releases](https://github.com/ffan008/dsh-media-desk-studio/releases/latest) 下载 `dsh-media-desk-studio-*.tgz`，把包名换成 `"file:$PWD/dsh-media-desk-studio-版本号.tgz"`。
 
 **3. 打开。** 侧栏会出现「自媒体工作台」。第一次看到的都是示例数据，方便你先看看每个页面长什么样；点右上角「示例数据 · 清空」，换成自己的。
 
-卸载时把 `add` 换成 `remove dsh-media-desk`。你的内容一直在 `~/.dsh/media-desk/`，不会跟着删。
+卸载时把 `add` 换成 `remove dsh-media-desk-studio`。你的内容一直在 `~/.dsh/media-desk-studio/`，不会跟着删。
 
 <br>
 
@@ -263,7 +263,7 @@ dsh plugin --profile web add dsh-media-desk
 <summary><b>我的东西存在哪？</b></summary>
 <br>
 
-全在本机 `~/.dsh/media-desk/`，桌面版和网页版共用。没有云端，没有账号系统。
+全在本机 `~/.dsh/media-desk-studio/`，桌面版和网页版共用。没有云端，没有账号系统。
 
 </details>
 
@@ -295,7 +295,7 @@ dsh plugin --profile web add dsh-media-desk
 
 ## 作者
 
-我是 [蜗牛的科技笔记](https://www.xiaohongshu.com/user/profile/5faedce8000000000101c8a3)，在小红书做科技内容，小红书号 `1097519508`。这个工作台是我自己每天用的：灵感记不住、成稿太慢、发完不知道效果，这三件事我都踩过，所以做成了这样。用得顺手或者不顺手，欢迎提 [Issue](https://github.com/woniuniuniu/dsh-media-desk/issues)，也欢迎来小红书找我聊。
+我是 [蜗牛的科技笔记](https://www.xiaohongshu.com/user/profile/5faedce8000000000101c8a3)，在小红书做科技内容，小红书号 `1097519508`。这个工作台是我自己每天用的：灵感记不住、成稿太慢、发完不知道效果，这三件事我都踩过，所以做成了这样。用得顺手或者不顺手，欢迎提 [Issue](https://github.com/ffan008/dsh-media-desk-studio/issues)，也欢迎来小红书找我聊。
 
 ## 致谢
 
@@ -306,27 +306,27 @@ dsh plugin --profile web add dsh-media-desk
 
 谢谢这些朋友认真试用、细心排查、动手修代码：
 
-- [secountAiAccount](https://github.com/secountAiAccount)：发现深色模式下风格下拉框看不清（[#1](https://github.com/woniuniuniu/dsh-media-desk/issues/1)），设置图标容易被当成切换深浅色（[#2](https://github.com/woniuniuniu/dsh-media-desk/issues/2)）
-- [isxiaokunos](https://github.com/isxiaokunos)：定位到生图网关返回相对地址时必定失败、误报和白白重画的根因，还附上了补丁和实测数据（[#3](https://github.com/woniuniuniu/dsh-media-desk/issues/3)）
-- [townmi（Harry Tang）](https://github.com/townmi)：查清 opencode-go 网关缺少会话头导致模型调用失败，并指出面板误报「模型未连接」（[#4](https://github.com/woniuniuniu/dsh-media-desk/issues/4)）
-- [zach22-1999](https://github.com/zach22-1999)：修好了 X 帖子媒体字段格式不一时导入崩溃的问题（[#6](https://github.com/woniuniuniu/dsh-media-desk/pull/6)）
-- [chenxupeng1990-eng](https://github.com/chenxupeng1990-eng)：让助手可以在工作台里自选模型，不必跟随 DSH 默认模型（[#5](https://github.com/woniuniuniu/dsh-media-desk/pull/5)）
-- [dsh-agent-sixtyseven](https://github.com/dsh-agent-sixtyseven)：查清 Windows 上导入账号一直显示「还没装好 Monid」的两处根因，并修好了定位和调用（[#7](https://github.com/woniuniuniu/dsh-media-desk/issues/7)、[#8](https://github.com/woniuniuniu/dsh-media-desk/pull/8)）
-- [smallflycar](https://github.com/smallflycar)：让工作台可以直接用 GPT 订阅生图，不用再另配图片 API（[#9](https://github.com/woniuniuniu/dsh-media-desk/pull/9)）
-- [cofftea114](https://github.com/cofftea114)：指出左侧栏被别的插件接管后工作台没有入口，并给出挂到 dsh-better-sidebar 右侧栏的做法（[#10](https://github.com/woniuniuniu/dsh-media-desk/issues/10)）
-- [Feahter](https://github.com/Feahter)：做了插件市场索引，粘一条地址就能在「发现」里一键安装，还带上了校验和测试（[#11](https://github.com/woniuniuniu/dsh-media-desk/pull/11)；又加了版本自查，有新版本时顶栏会提示，设置里能看到当前版本（[#19](https://github.com/woniuniuniu/dsh-media-desk/pull/19)）
-- [TerryWang9112（Terry）](https://github.com/TerryWang9112)：接入阿里云百炼和万相生图，并让每次成稿可以选择只出文字、不画图（[#12](https://github.com/woniuniuniu/dsh-media-desk/pull/12)）
-- [ytzhangFTD（小虾米）](https://github.com/ytzhangFTD)：发现灵感的正文进了成稿工作区就看不到，并定位到是哪一处没有渲染（[#13](https://github.com/woniuniuniu/dsh-media-desk/issues/13)）
-- [giuliano1101](https://github.com/giuliano1101)：查出同一篇内容的数据会被重复计算（[#15](https://github.com/woniuniuniu/dsh-media-desk/issues/15)）、再次保存成稿会冲掉文件夹里手改的稿子（[#16](https://github.com/woniuniuniu/dsh-media-desk/issues/16)），还完整做了一版多账号、命令行与 MCP、版本历史的方案供参考（[#14](https://github.com/woniuniuniu/dsh-media-desk/pull/14)）
-- [wmaly13](https://github.com/wmaly13)：发现体裁的「脚本 / 文章」文字没有居中，还提出在一条灵感下面挂子灵感的想法（[#18](https://github.com/woniuniuniu/dsh-media-desk/issues/18)）
+- [secountAiAccount](https://github.com/secountAiAccount)：发现深色模式下风格下拉框看不清（[#1](https://github.com/ffan008/dsh-media-desk-studio/issues/1)），设置图标容易被当成切换深浅色（[#2](https://github.com/ffan008/dsh-media-desk-studio/issues/2)）
+- [isxiaokunos](https://github.com/isxiaokunos)：定位到生图网关返回相对地址时必定失败、误报和白白重画的根因，还附上了补丁和实测数据（[#3](https://github.com/ffan008/dsh-media-desk-studio/issues/3)）
+- [townmi（Harry Tang）](https://github.com/townmi)：查清 opencode-go 网关缺少会话头导致模型调用失败，并指出面板误报「模型未连接」（[#4](https://github.com/ffan008/dsh-media-desk-studio/issues/4)）
+- [zach22-1999](https://github.com/zach22-1999)：修好了 X 帖子媒体字段格式不一时导入崩溃的问题（[#6](https://github.com/ffan008/dsh-media-desk-studio/pull/6)）
+- [chenxupeng1990-eng](https://github.com/chenxupeng1990-eng)：让助手可以在工作台里自选模型，不必跟随 DSH 默认模型（[#5](https://github.com/ffan008/dsh-media-desk-studio/pull/5)）
+- [dsh-agent-sixtyseven](https://github.com/dsh-agent-sixtyseven)：查清 Windows 上导入账号一直显示「还没装好 Monid」的两处根因，并修好了定位和调用（[#7](https://github.com/ffan008/dsh-media-desk-studio/issues/7)、[#8](https://github.com/ffan008/dsh-media-desk-studio/pull/8)）
+- [smallflycar](https://github.com/smallflycar)：让工作台可以直接用 GPT 订阅生图，不用再另配图片 API（[#9](https://github.com/ffan008/dsh-media-desk-studio/pull/9)）
+- [cofftea114](https://github.com/cofftea114)：指出左侧栏被别的插件接管后工作台没有入口，并给出挂到 dsh-better-sidebar 右侧栏的做法（[#10](https://github.com/ffan008/dsh-media-desk-studio/issues/10)）
+- [Feahter](https://github.com/Feahter)：做了插件市场索引，粘一条地址就能在「发现」里一键安装，还带上了校验和测试（[#11](https://github.com/ffan008/dsh-media-desk-studio/pull/11)；又加了版本自查，有新版本时顶栏会提示，设置里能看到当前版本（[#19](https://github.com/ffan008/dsh-media-desk-studio/pull/19)）
+- [TerryWang9112（Terry）](https://github.com/TerryWang9112)：接入阿里云百炼和万相生图，并让每次成稿可以选择只出文字、不画图（[#12](https://github.com/ffan008/dsh-media-desk-studio/pull/12)）
+- [ytzhangFTD（小虾米）](https://github.com/ytzhangFTD)：发现灵感的正文进了成稿工作区就看不到，并定位到是哪一处没有渲染（[#13](https://github.com/ffan008/dsh-media-desk-studio/issues/13)）
+- [giuliano1101](https://github.com/giuliano1101)：查出同一篇内容的数据会被重复计算（[#15](https://github.com/ffan008/dsh-media-desk-studio/issues/15)）、再次保存成稿会冲掉文件夹里手改的稿子（[#16](https://github.com/ffan008/dsh-media-desk-studio/issues/16)），还完整做了一版多账号、命令行与 MCP、版本历史的方案供参考（[#14](https://github.com/ffan008/dsh-media-desk-studio/pull/14)）
+- [wmaly13](https://github.com/wmaly13)：发现体裁的「脚本 / 文章」文字没有居中，还提出在一条灵感下面挂子灵感的想法（[#18](https://github.com/ffan008/dsh-media-desk-studio/issues/18)）
 
-欢迎大家继续[提 issue](https://github.com/woniuniuniu/dsh-media-desk/issues)，每一条都会认真看。
+欢迎大家继续[提 issue](https://github.com/ffan008/dsh-media-desk-studio/issues)，每一条都会认真看。
 
 ### 贡献者
 
 谢谢每一位提交过代码的朋友：
 
-[![贡献者](https://contrib.rocks/image?repo=woniuniuniu/dsh-media-desk)](https://github.com/woniuniuniu/dsh-media-desk/graphs/contributors)
+[![贡献者](https://contrib.rocks/image?repo=ffan008/dsh-media-desk-studio)](https://github.com/ffan008/dsh-media-desk-studio/graphs/contributors)
 
 ## 开发
 
@@ -353,7 +353,7 @@ npm pack                       # 打出可安装的 tgz
 
 改了 `src/` 要重启 DeepSeek Harness。
 
-**安全：** 每个接口都经过 Host 鉴权；模型输出和读到的外部内容只取固定字段、限制长度，操作走白名单；粘贴的链接不能访问本机和内网；调用 `monid` 不经过 shell，账号 ID 只接受固定格式。漏洞请走 [Security Advisories](https://github.com/woniuniuniu/dsh-media-desk/security/advisories/new) 私下报告。
+**安全：** 每个接口都经过 Host 鉴权；模型输出和读到的外部内容只取固定字段、限制长度，操作走白名单；粘贴的链接不能访问本机和内网；调用 `monid` 不经过 shell，账号 ID 只接受固定格式。漏洞请走 [Security Advisories](https://github.com/ffan008/dsh-media-desk-studio/security/advisories/new) 私下报告。
 
 <br>
 

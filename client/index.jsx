@@ -1,4 +1,4 @@
-// dsh-media-desk 浏览器半片：侧栏入口 + main 全局面板。
+// dsh-media-desk-studio 浏览器半片：侧栏入口 + main 全局面板。
 import React from 'react'
 import { HomeView } from './canvas.jsx'
 import { ChatDock } from './chat.jsx'
@@ -15,7 +15,7 @@ import { lang, subscribeLang, t, useLang } from './i18n.js'
 import { updateUrl, useVersionInfo } from './version.js'
 import { Dialog, FormDialog, Icon, IconButton, Toast } from './ui.jsx'
 
-const PANEL_ID = 'media-desk'
+const PANEL_ID = 'media-desk-studio'
 
 // navKey：同一个中文在别处意思不同（单数的“灵感”“风格”），英文导航另查一条
 const NAV = [
@@ -221,7 +221,7 @@ export function apply(ctx) {
     mount()
     const off = subscribeLang(mount)
     return () => { off(); release?.() }
-  }, 'dsh-media-desk: sidebar entry')
+  }, 'dsh-media-desk-studio: sidebar entry')
   mountBetterSidebar(ctx)
 }
 
@@ -241,13 +241,13 @@ function mountBetterSidebar(ctx) {
       order: 60,
       single: true,
       component: Desk,
-    }), 'dsh-media-desk: better-sidebar tab')
+    }), 'dsh-media-desk-studio: better-sidebar tab')
   }
   try {
     // 服务晚于我们就绪、或者中途被卸掉再装回，子作用域都会跟着重来
     if (typeof ctx.inject === 'function') ctx.inject(['betterSidebar'], register)
     else register(ctx)
   } catch (error) {
-    console.warn('[dsh-media-desk] better-sidebar tab skipped:', error)
+    console.warn('[dsh-media-desk-studio] better-sidebar tab skipped:', error)
   }
 }
