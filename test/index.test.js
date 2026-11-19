@@ -15,15 +15,16 @@ const doc = (overrides = {}) => ({
   ...overrides,
 })
 
-test('index.json：官方校验器接受，安装地址指向 npm 上的 dsh-media-desk-studio', () => {
+test('index.json：官方校验器接受，安装地址指向本仓库的 commit', () => {
   const index = JSON.parse(readFileSync(new URL('../index.json', import.meta.url), 'utf8'))
   const parsed = parseMarketIndex(index, INDEX_URL)
   assert.equal(parsed.plugins.length, 1)
   const [plugin] = parsed.plugins
   assert.equal(plugin.name, 'dsh-media-desk-studio')
   const [version] = plugin.versions
-  // 版本号每次发版都会变，这里只认格式
-  assert.match(marketInstallTarget(plugin.name, version).spec, /^dsh-media-desk-studio@\d+\.\d+\.\d+$/)
+  // studio 版走 git 来源，安装 spec 是 commit 锁定的 git+https URL
+  assert.equal(version.source.type, 'git')
+  assert.match(marketInstallTarget(plugin.name, version).spec, /^git\+https:\/\/github\.com\/ffan008\/dsh-media-desk-studio\.git#[0-9a-f]{40}$/)
 })
 
 test('index.json：列表里的版本和 engines 与 package.json 一致', () => {

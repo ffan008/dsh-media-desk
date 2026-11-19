@@ -54,10 +54,12 @@
       },
       "versions": [
         {
-          "version": "2.7.1",
-          "publishTimestamp": 1794501659,
+          "version": "3.0.0",
+          "publishTimestamp": 1795049520,
           "source": {
-            "type": "npm"
+            "type": "git",
+            "url": "https://github.com/ffan008/dsh-media-desk-studio",
+            "commit": "9a6ee2fc2a26405258bf2f506d281d19754322ef"
           },
           "engines": {
             "dsh": ">=0.2.1-rc.5 <0.3.0"

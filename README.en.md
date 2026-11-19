@@ -5,11 +5,15 @@
   </picture>
 </p>
 
-<h1 align="center">Media Desk</h1>
+<h1 align="center">Media Desk · Content Studio Edition</h1>
 
 <p align="center"><b>A DeepSeek Harness plugin. Capture an idea, and one click drafts the script, cover, images and storyboard.</b></p>
 
-<p align="center">Built by <a href="https://www.xiaohongshu.com/user/profile/5faedce8000000000101c8a3"><b>蜗牛的科技笔记</b></a> (Snail's Tech Notes), a tech creator on RedNote, as the desk behind their own daily posts.</p>
+> **This is the optimized edition (dsh-media-desk-studio, v3.0.0)**, forked from [dsh-media-desk](https://github.com/woniuniuniu/dsh-media-desk). It has its own package name and can be installed **side by side with the original**.
+>
+> What's new: the **Content** page is now a writing studio that guides you through the spoken-video workflow — **topic → copy the hook → list viewpoints → write content → on-camera presence** — with checklists, the word-count formula, live progress, locally saved drafts and one-click save to your library. WeChat Channels import (sph ID / finder / share link) is included too.
+
+<p align="center">Original by <a href="https://www.xiaohongshu.com/user/profile/5faedce8000000000101c8a3"><b>蜗牛的科技笔记</b></a> (Snail's Tech Notes); this optimized edition maintained by <a href="https://github.com/ffan008"><b>Fan Sir (Allwise AI)</b></a>.</p>
 
 <p align="center">
   <a href="#get-started">Install</a> ·
@@ -166,19 +170,23 @@ If github.com is hard to reach from your network, use this CDN mirror instead �
 https://cdn.jsdelivr.net/gh/ffan008/dsh-media-desk-studio@main/index.json
 ```
 
-**Media Desk** shows up in the list; install it from there. It installs the same `dsh-media-desk-studio` npm package, the index just saves typing the package name.
+**Media Desk · Content Studio** shows up in the list; install it from there. The index pins a commit of this repository, so you get this optimized edition.
 
-Without the index, go to Plugins → Add plugin, enter `dsh-media-desk-studio`, and install. You can also install from the command line. Quit the desktop app completely (⌘Q) first and reopen it afterwards. For the web version, restart `dsh web`. If the `dsh` command isn't available in your terminal, choose "Manage dsh command" from the desktop app's menu.
+Without the index, go to Plugins → Add plugin and paste this repository URL, or use the command line. Quit the desktop app completely (⌘Q) first and reopen it afterwards. For the web version, restart `dsh web`. If the `dsh` command isn't available in your terminal, choose "Manage dsh command" from the desktop app's menu.
 
 ```bash
-dsh plugin --profile desktop add dsh-media-desk-studio
+dsh plugin --profile desktop add git+https://github.com/ffan008/dsh-media-desk-studio.git
 ```
 
 ```bash
-dsh plugin --profile web add dsh-media-desk-studio
+dsh plugin --profile web add git+https://github.com/ffan008/dsh-media-desk-studio.git
 ```
 
-**2. Update.** When a new version comes out, the Plugins page shows an update — click it; a command-line install runs the same command again. Media Desk also checks npm itself (at most once an hour, reading only the version number): when a newer version exists the top bar shows `↑ vX.Y.Z`, Settings shows the version you are on, and the badge opens the npm page with the upgrade command. To install offline, download `dsh-media-desk-studio-*.tgz` from [Releases](https://github.com/ffan008/dsh-media-desk-studio/releases/latest) and use `"file:$PWD/dsh-media-desk-studio-VERSION.tgz"` in place of the package name.
+The built `dist/client.js` ships in the repo, so no local build step is needed.
+
+**2. Update.** When a new version comes out, the Plugins page shows an update — click it; a command-line install runs the same command again. The desk checks this repository's GitHub Releases (at most once an hour, version number only): when a newer version exists the top bar shows `↑ vX.Y.Z`, Settings shows your current version, and the badge opens the release notes.
+
+Because it uses a distinct package name (`dsh-media-desk-studio`), this edition installs **alongside** the original `dsh-media-desk` — two separate workbenches in the sidebar, with separate data folders.
 
 **3. Open.** **Media Desk** appears in the sidebar. On first launch it's filled with sample data so you can explore every page. Click **Clear sample data** in the top right when you're ready to start with your own.
 

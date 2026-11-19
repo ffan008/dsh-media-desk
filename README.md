@@ -5,11 +5,15 @@
   </picture>
 </p>
 
-<h1 align="center">自媒体工作台</h1>
+<h1 align="center">自媒体工作台 · 创作工作台优化版</h1>
 
 <p align="center"><b>DeepSeek Harness 的一个插件。记一句灵感，一键做出脚本、封面、配图和分镜。</b></p>
 
-<p align="center">由小红书科技博主 <a href="https://www.xiaohongshu.com/user/profile/5faedce8000000000101c8a3"><b>蜗牛的科技笔记</b></a> 开发，一个每天要发内容的人，给自己做的工作台。</p>
+> **这是优化版（dsh-media-desk-studio，v3.0.0）**，基于开源项目 [dsh-media-desk](https://github.com/woniuniuniu/dsh-media-desk) 二次开发，包名独立、可与原版**同时安装、互不冲突**。
+>
+> 本次优化：把「内容」板块升级为**内容创作工作台**，按口播短视频全流程—— **选题 → 抄开头 → 列观点 → 填内容 → 镜头表现力** —— 一步一步引导创作；每步带方法论要点、可勾选清单、字数公式与实时反馈，流程稿自动保存在本机、可一键存进内容库。另外合入了**视频号数据导入**支持（sph 号 / finder / 分享链）。
+
+<p align="center">原版由小红书科技博主 <a href="https://www.xiaohongshu.com/user/profile/5faedce8000000000101c8a3"><b>蜗牛的科技笔记</b></a> 开发；本优化版由 <a href="https://github.com/ffan008"><b>范Sir（全智AI）</b></a> 维护。</p>
 
 <p align="center">
   <a href="#三步上手">安装</a> ·
@@ -181,19 +185,23 @@ GitHub 直连不通时，换成这个 CDN 镜像，代价是它最多可能比�
 https://cdn.jsdelivr.net/gh/ffan008/dsh-media-desk-studio@main/index.json
 ```
 
-列表里会出现「自媒体工作台」，点安装即可。它装的就是同一个 npm 包 `dsh-media-desk-studio`，索引只是省掉手输包名这一步。
+列表里会出现「自媒体工作台 · 创作工作台优化版」，点安装即可。索引里锁定了本仓库的某个 commit，装的就是这个优化版。
 
-不想加索引，也可以在「插件」→「添加插件」里输入包名 `dsh-media-desk-studio` 点安装，或者用命令行。桌面版要先完全退出（⌘Q）再装，装好重新打开；网页版装好后重启 `dsh web`。终端里没有 `dsh` 的话，先在桌面版菜单里选「管理 dsh 命令」。
+不想加索引，也可以直接在「插件」→「添加插件」里贴下面这条仓库地址安装，或者用命令行。桌面版要先完全退出（⌘Q）再装，装好重新打开；网页版装好后重启 `dsh web`。终端里没有 `dsh` 的话，先在桌面版菜单里选「管理 dsh 命令」。
 
 ```bash
-dsh plugin --profile desktop add dsh-media-desk-studio
+dsh plugin --profile desktop add git+https://github.com/ffan008/dsh-media-desk-studio.git
 ```
 
 ```bash
-dsh plugin --profile web add dsh-media-desk-studio
+dsh plugin --profile web add git+https://github.com/ffan008/dsh-media-desk-studio.git
 ```
 
-**2. 更新。** 有新版本时，插件页会显示可更新，点一下就行；用命令行装的重跑一次上面的命令。工作台自己也会查 npm 上的最新版本（每小时最多一次，只读版本号）：有新版本时顶栏出现 `↑ v新版本号` 的小提示，设置底部能看到当前版本，点提示去 npm 页面看升级命令。想离线安装的话，也可以到 [Releases](https://github.com/ffan008/dsh-media-desk-studio/releases/latest) 下载 `dsh-media-desk-studio-*.tgz`，把包名换成 `"file:$PWD/dsh-media-desk-studio-版本号.tgz"`。
+构建产物 `dist/client.js` 已随仓库一起分发，clone 或 git 安装后不用自己跑构建。
+
+**2. 更新。** 有新版本时，插件页会显示可更新，点一下就行；用命令行装的重跑一次上面的命令。工作台会查本仓库 GitHub Releases 的最新版本（每小时最多一次，只读版本号）：有新版本时顶栏出现 `↑ v新版本号` 的小提示，设置底部能看到当前版本，点提示去看发布说明。
+
+因为包名独立（`dsh-media-desk-studio`），这个优化版可以和原版 `dsh-media-desk` **同时安装**，侧栏里是两个不同的工作台，数据目录也分开，互不影响。
 
 **3. 打开。** 侧栏会出现「自媒体工作台」。第一次看到的都是示例数据，方便你先看看每个页面长什么样；点右上角「示例数据 · 清空」，换成自己的。
 
